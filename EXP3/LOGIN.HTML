@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Train Booking - Login</title>
+<style>
+.login-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+form {
+    display: flex;
+    flex-direction: column;
+}
+label {
+    text-align: left;
+}
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+button[type="submit"] {
+    background-color: #4caf50;
+    color: #fff;
+    cursor: pointer;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+button[type="submit"]:hover {
+    background-color: #45a049;
+}
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+.modal-wrapper {
+    display: none;
+    position: fixed;
+      top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+
+}
+.modal {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+.close {
+    cursor: pointer;
+    font-size: 18px;
+    margin-top: 10px;
+}
+</style>
+</head>
+<body>
+<div class="login-container">
+    <h2>Login</h2>
+    <form id="loginForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <div class="error-message" id="error"></div>
+        <button type="submit">Login</button>
+    </form>
+</div>
+<div class="modal-wrapper" id="modalWrapper">
+    <div class="modal" id="modal">
+        <span class="close" id="closeModal">&times;</span>
+        <p id="modalMessage"></p>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+$(document).ready(function() {
+    const loginForm = $('#loginForm');
+// Submit login form using AJAX
+    loginForm.submit(function(event) {
+        event.preventDefault();
+        $.ajax({
+            url: 'https://api.example.com/login', // Sample endpoint
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function(response) {
+                showModal('Login successful!');
+            },
+            error: function(xhr, status, error) {
+                showError('Login failed. Please try again.');
+            }
+        });
+    });
+    function showError(message) {
+        $('#error').text(message).show();
+    }
+    function showModal(message) {
+        $('#modalMessage').text(message);
+        $('#modalWrapper').show();
+    }
+    $('#modalWrapper').click(function() {
+        $(this).hide();
+    });
+    $('#closeModal').click(function(event) {
+        event.stopPropagation();
+        $('#modalWrapper').hide();
+    });
+});
+</script>
+</body>
+</html>
